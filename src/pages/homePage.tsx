@@ -18,6 +18,13 @@ const MovieListPage: React.FC = () => {
   const [genreFilter, setGenreFilter] = useState("0");
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  const addToFavourites = (movieId: number) => {
+    const updatedMovies = movies.map((m: BaseMovieProps) =>
+      m.id === movieId ? { ...m, favourite: true } : m
+    );
+    setMovies(updatedMovies);
+  };
+
   const genreId = Number(genreFilter);
   const displayedMovies = movies
     .filter((m: BaseMovieProps) => m.title.toLowerCase().includes(titleFilter.toLowerCase()))
@@ -42,7 +49,7 @@ const MovieListPage: React.FC = () => {
           <Header title="Home Page" />
         </Grid>
         <Grid item container spacing={5}>
-          <MovieList movies={displayedMovies} />
+          <MovieList movies={displayedMovies} selectFavourite={addToFavourites} />
         </Grid>
       </Grid>
       <Fab color="secondary" variant="extended" onClick={() => setDrawerOpen(true)} sx={styles.fab}>
