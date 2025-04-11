@@ -15,6 +15,8 @@ export interface BaseMovieProps {
   revenue: number;
   vote_count: number;
   favourite?: boolean;
+  genres: { id: number; name: string }[];
+  production_countries: { iso_3166_1: string; name: string }[];
 }
 
 export interface BaseMovieListProps {
