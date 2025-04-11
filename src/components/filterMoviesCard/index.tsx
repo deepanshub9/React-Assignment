@@ -11,6 +11,9 @@ import SortIcon from "@mui/icons-material/Sort";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { FilterOption } from "../../types/interfaces"; // Added from lab instructions
+import { getGenres } from "../../api/tmdb-api";
+
+
 
 const styles = {
   root: { maxWidth: 345 },
@@ -28,13 +31,11 @@ const FilterMoviesCard: React.FC<FilterMoviesCardProps> = ({ titleFilter, genreF
   const [genres, setGenres] = useState([{ id: "0", name: "All" }]); // Fixed initial state
 
   useEffect(() => {
-    fetch(`https://api.themoviedb.org/3/genre/movie/list?api_key=${import.meta.env.VITE_TMDB_KEY}`)
-      .then((res) => res.json())
-      .then((json) => json.genres)
-      .then((apiGenres) => setGenres([{ id: "0", name: "All" }, ...apiGenres])) // Fixed incorrect reference
-      .catch((err) => console.error("Error fetching genres:", err));
+    getGenres().then((allGenres) => {
+      setGenres([{ id: "0", name: "All" }, ...allGenres]);
+    });
   }, []);
-
+  
   const handleChange = (type: FilterOption, value: string) => {
     onUserInput(type, value); // Fixed function signature
   };
