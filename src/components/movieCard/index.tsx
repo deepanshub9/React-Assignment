@@ -1,4 +1,5 @@
 import React, { MouseEvent } from "react";
+import { Link } from "react-router-dom"; // Added for navigation
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -36,23 +37,22 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, selectFavourite }) => {
             </Avatar>
           ) : null
         }
-        title={<Typography variant="h5" component="p">{movie.title}{" "}</Typography>}
+        title={<Typography variant="h5" component="p">{movie.title}</Typography>}
       />
       <CardMedia sx={styles.media} image={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : img} />
       <CardContent>
-        <Grid container>
-          <Grid item xs={12}>
-            <Typography variant="h6" component="p">
-              {movie.overview}
-            </Typography>
-          </Grid>
-        </Grid>
+        <Typography variant="subtitle1">
+          <strong>Release Date:</strong> {movie.release_date}
+        </Typography>
+        <Typography variant="subtitle1">
+          <strong>Rating:</strong> {movie.vote_average} / 10
+        </Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton aria-label="add to favourites" onClick={handleAddToFavourite}>
           <FavoriteIcon color="primary" fontSize="large" />
         </IconButton>
-        <Button variant="outlined" size="medium" color="primary">
+        <Button component={Link} to={`/movies/${movie.id}`} variant="outlined" size="medium" color="primary">
           More Info ...
         </Button>
       </CardActions>
