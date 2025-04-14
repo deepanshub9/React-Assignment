@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PageTemplate from "../components/templateMovieListPage";
-import { BaseMovieProps } from "../types/interfaces";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter, genreFilter } from "../components/movieFilterUI";
+import { DiscoverMovies } from "../types/interfaces";
+import { useQuery } from "react-query";
+import Spinner from "../components/spinner";
 
 const titleFiltering = { name: "title", value: "", condition: titleFilter };
 const genreFiltering = { name: "genre", value: "0", condition: genreFilter };
 
 const HomePage: React.FC = () => {
-  const [movies, setMovies] = useState<BaseMovieProps[]>([]);
-  const favourites = movies.filter((m) => m.favourite);
+  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(["discover"], getMovies);
   const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
 
-  localStorage.setItem("favourites", JSON.stringify(favourites));
-
-  const addToFavourites = (movieId: number) => {
-    const updatedMovies = movies.map((m: BaseMovieProps) =>
-      m.id === movieId ? { ...m, favourite: true } : m
-    );
-    setMovies(updatedMovies);
-  };
+  if (isLoading) return <Spinner />;
+  if (isError) return <h1>{error.message}</h1>;
 
   const changeFilterValues = (type: string, value: string) => {
     const changedFilter = { name: type, value };
@@ -28,11 +23,18 @@ const HomePage: React.FC = () => {
     setFilterValues(updatedFilterSet);
   };
 
-  useEffect(() => {
-    getMovies().then((movies) => setMovies(movies));
-  }, []);
-
+  const movies = data ? data.results : [];
   const displayedMovies = filterFunction(movies);
+
+  // ✅ Fix: Use `movieId` inside the function to store favorites
+  const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
+
+  const addToFavourites = (movieId: number) => {
+    if (!favourites.includes(movieId)) {
+      const updatedFavourites = [...favourites, movieId];
+      localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
+    }
+  };
 
   return (
     <>
