@@ -3,9 +3,10 @@ import PageTemplate from "../components/templateMovieListPage";
 import { getMovies } from "../api/tmdb-api";
 import useFiltering from "../hooks/useFiltering";
 import MovieFilterUI, { titleFilter, genreFilter } from "../components/movieFilterUI";
-import { DiscoverMovies } from "../types/interfaces";
+import { DiscoverMovies, BaseMovieProps } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
+import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
 
 const titleFiltering = { name: "title", value: "", condition: titleFilter };
 const genreFiltering = { name: "genre", value: "0", condition: genreFilter };
@@ -26,20 +27,20 @@ const HomePage: React.FC = () => {
   const movies = data ? data.results : [];
   const displayedMovies = filterFunction(movies);
 
-  // ✅ Fix: Use `movieId` inside the function to store favorites
-  const favourites = JSON.parse(localStorage.getItem("favourites") || "[]");
-
-  const addToFavourites = (movieId: number) => {
-    if (!favourites.includes(movieId)) {
-      const updatedFavourites = [...favourites, movieId];
-      localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
-    }
-  };
-
   return (
     <>
-      <PageTemplate title="Discover Movies" movies={displayedMovies} selectFavourite={addToFavourites} />
-      <MovieFilterUI onFilterValuesChange={changeFilterValues} titleFilter={filterValues[0].value} genreFilter={filterValues[1].value} />
+      <PageTemplate
+        title="Discover Movies"
+        movies={displayedMovies}
+        action={(movie: BaseMovieProps) => {
+          return <AddToFavouritesIcon {...movie} />;
+        }}
+      />
+      <MovieFilterUI
+        onFilterValuesChange={changeFilterValues}
+        titleFilter={filterValues[0].value}
+        genreFilter={filterValues[1].value}
+      />
     </>
   );
 };

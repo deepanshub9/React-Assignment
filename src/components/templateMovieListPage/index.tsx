@@ -6,14 +6,14 @@ import { MovieListPageTemplateProps } from "../../types/interfaces";
 
 const styles = { root: { backgroundColor: "#bfbfbf" } };
 
-const MovieListPageTemplate: React.FC<MovieListPageTemplateProps> = ({ movies, title, selectFavourite }) => {
+const MovieListPageTemplate: React.FC<MovieListPageTemplateProps> = ({ movies, title, action }) => { // ✅ Fixed function signature
   return (
     <Grid container sx={styles.root}>
       <Grid item xs={12}>
         <Header title={title} />
       </Grid>
       <Grid item container spacing={5}>
-        <MovieList selectFavourite={selectFavourite} movies={movies} />
+        <MovieList action={action} movies={movies} /> {}
       </Grid>
     </Grid>
   );

@@ -1,4 +1,4 @@
-import React, { MouseEvent, useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom"; 
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -8,28 +8,21 @@ import CardHeader from "@mui/material/CardHeader";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import IconButton from "@mui/material/IconButton";
 import Avatar from "@mui/material/Avatar";
 import img from "../../images/film-poster-placeholder.png";
 import { BaseMovieProps } from "../../types/interfaces";
 import { MoviesContext } from "../../contexts/moviesContext"; 
 
-
 const styles = { card: { maxWidth: 345 }, media: { height: 500 }, avatar: { backgroundColor: "rgb(255, 0, 0)" } };
 
 interface MovieCardProps {
   movie: BaseMovieProps;
-  selectFavourite: (movieId: number) => void;
+  action: (m: BaseMovieProps) => React.ReactNode; 
 }
 
-const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
-  const { favourites, addToFavourites } = useContext(MoviesContext);
-
+const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => { 
+  const { favourites } = useContext(MoviesContext);
   const isFavourite = favourites.includes(movie.id);
-  const handleAddToFavourite = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    addToFavourites(movie);
-  };
 
   return (
     <Card sx={styles.card}>
@@ -47,9 +40,7 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favourites" onClick={handleAddToFavourite}>
-          <FavoriteIcon color="primary" fontSize="large" />
-        </IconButton>
+        {action(movie)}  {/* Dynamically assign correct action */}
         <Button component={Link} to={`/movies/${movie.id}`} variant="outlined" size="medium" color="primary">
           More Info ...
         </Button>
@@ -57,6 +48,5 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
     </Card>
   );
 };
-
 
 export default MovieCard;
