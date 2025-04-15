@@ -42,7 +42,7 @@ const FavouriteMoviesPage: React.FC = () => {
         action={(movie: BaseMovieProps) => (
           <>
             <RemoveFromFavourites {...movie} />
-            <WriteReview />
+            <WriteReview {...movie}/>
           </>
         )}
       />

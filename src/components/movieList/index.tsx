@@ -4,6 +4,7 @@ import MovieCard from "../movieCard";
 import { BaseMovieListProps } from "../../types/interfaces";
 
 const MovieList: React.FC<BaseMovieListProps> = ({ movies, action }) => { 
+  console.log("MovieList rendered with movies:", movies); // Debugging log
   return (
     <>
       {movies.map((m) => (

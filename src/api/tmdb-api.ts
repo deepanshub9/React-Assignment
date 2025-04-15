@@ -1,3 +1,5 @@
+import { BaseMovieProps } from "../types/interfaces"; // ✅ Ensure correct import
+
 export const getMovies = () => {
   return fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=${
@@ -23,11 +25,10 @@ export const getMovie = (id: string) => {
     }`
   )
     .then((response) => {
-      if (!response.ok) {
+      if (!response.ok)
         throw new Error(
           `Failed to get movie data. Response status: ${response.status}`
         );
-      }
       return response.json();
     })
     .catch((error) => {
@@ -37,9 +38,9 @@ export const getMovie = (id: string) => {
 
 export const getGenres = () => {
   return fetch(
-    "https://api.themoviedb.org/3/genre/movie/list?api_key=" +
-      import.meta.env.VITE_TMDB_KEY +
-      "&language=en-US"
+    `https://api.themoviedb.org/3/genre/movie/list?api_key=${
+      import.meta.env.VITE_TMDB_KEY
+    }&language=en-US`
   )
     .then((response) => {
       if (!response.ok)
@@ -60,9 +61,7 @@ export const getMovieImages = (id: string | number) => {
     }`
   )
     .then((response) => {
-      if (!response.ok) {
-        throw new Error("failed to fetch images");
-      }
+      if (!response.ok) throw new Error("Failed to fetch images");
       return response.json();
     })
     .then((json) => json.posters)
@@ -81,12 +80,18 @@ export const getMovieReviews = (id: string | number) => {
     .then((json) => json.results);
 };
 
-export const getUpcomingMovies = () => {
-  return fetch(
+export const getUpcomingMovies = async (): Promise<{
+  results: BaseMovieProps[];
+}> => {
+  const response = await fetch(
     `https://api.themoviedb.org/3/movie/upcoming?api_key=${
       import.meta.env.VITE_TMDB_KEY
-    }&language=en-US&page=1`
-  )
-    .then((res) => res.json())
-    .then((json) => json.results);
+    }`
+  );
+  if (!response.ok) {
+    throw new Error(
+      `Failed to fetch upcoming movies. Status: ${response.status}`
+    );
+  }
+  return response.json();
 };
