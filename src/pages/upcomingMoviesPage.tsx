@@ -1,23 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PageTemplate from "../components/templateMovieListPage";
-import { useQuery } from "react-query";
+import { BaseMovieProps } from "../types/interfaces";
 import { getUpcomingMovies } from "../api/tmdb-api";
 
 const UpcomingMoviesPage: React.FC = () => {
-  const { data: movies, error, isLoading, isError } = useQuery(
-    ["upcomingMovies"],
-    getUpcomingMovies
-  );
+  const [movies, setMovies] = useState<BaseMovieProps[]>([]);
 
-  if (isLoading) {
-    return <p>Loading upcoming movies...</p>;
-  }
+  useEffect(() => {
+    getUpcomingMovies().then((data) => {
+      setMovies(data.results); // ✅ Extract `results` from API response
+    });
+  }, []);
 
-  if (isError) {
-    return <h1>Error fetching upcoming movies: {error?.message}</h1>;
-  }
-
-  return <PageTemplate title="Upcoming Movies" movies={movies?.results || []} />;
+  return <PageTemplate title="Upcoming Movies" movies={movies} action={(movie) => <span>{movie.title}</span>} />;
 };
 
 export default UpcomingMoviesPage;
