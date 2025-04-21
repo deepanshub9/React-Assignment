@@ -19,10 +19,13 @@ const initialContextState: MovieContextInterface = {
 
 export const MoviesContext = React.createContext<MovieContextInterface>(initialContextState);
 
+
 const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [favourites, setFavourites] = useState<number[]>([]);
-  const [reviews, setReviews] = useState<Record<number, Review>>({}); // ✅ Defined reviews state
+  const [reviews, setReviews] = useState<Record<number, Review>>({}); 
 
+
+  
   const addToFavourites = (movie: BaseMovieProps) => {
     setFavourites((prevFavourites) => {
       if (!prevFavourites.includes(movie.id)) {
@@ -37,11 +40,11 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
   };
 
   const addReview = (movie: BaseMovieProps, review: Review) => {
-    setReviews((prevReviews: Record<number, Review>) => ({ ...prevReviews, [movie.id]: review })); // ✅ Fixed function
+    setReviews((prevReviews: Record<number, Review>) => ({ ...prevReviews, [movie.id]: review })); 
   };
 
   const getReview = (movieId: number): Review | undefined => {
-    return reviews[movieId]; // ✅ Correct retrieval from context
+    return reviews[movieId]; 
   };
 
   return (

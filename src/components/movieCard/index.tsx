@@ -24,6 +24,8 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => { 
   const { favourites } = useContext(MoviesContext);
   const isFavourite = favourites.includes(movie.id);
+  const context = useContext(MoviesContext);
+
   <MovieCard>
   <PlaylistAddIcon color="primary" fontSize="large" /> {/* ✅ Add the icon */}
 </MovieCard>
@@ -51,6 +53,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
       </CardActions>
       
     </Card>
+    
+    
+
   );
 };
 
