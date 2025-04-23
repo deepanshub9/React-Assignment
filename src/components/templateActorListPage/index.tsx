@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid";
 import ActorList from "../actorList";
 import { BaseActorListProps } from "../../types/interfaces";
 
-const styles = { root: { backgroundColor: "#f5f5f5", padding: "20px" } };
+const styles = { root: { backgroundColor: "#f5f5f5", padding: "0px 20px 20px 20px" } };
 
 const ActorListPageTemplate: React.FC<BaseActorListProps> = ({ actors, action }) => {
   return (

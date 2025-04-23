@@ -22,8 +22,12 @@ const ActorsPage: React.FC = () => {
             backgroundColor: "#1976d2",
             color: "#fff",
             borderRadius: "5px",
+            cursor: "pointer",
           }}
-          onClick={() => alert(`Actor: ${actor.name}`)} // Example usage of `actor`
+          onClick={() => {
+            const wikipediaUrl = `https://en.wikipedia.org/wiki/${encodeURIComponent(actor.name)}`;
+            window.open(wikipediaUrl, "_blank"); 
+          }}
         >
           View Details
         </button>

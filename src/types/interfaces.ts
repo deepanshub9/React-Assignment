@@ -77,5 +77,16 @@ export interface BaseActorListProps {
   actors: BaseActorProps[];
   action: (actor: BaseActorProps) => React.ReactNode;
 }
-
-
+export type BaseTvSeriesProps = {
+  id: number;
+  name: string;
+  overview: string;
+  popularity: number;
+  poster_path?: string;
+  first_air_date: string;
+  genre_ids: number[];
+};
+export type TvGenre = {
+  id: number;
+  name: string;
+};
