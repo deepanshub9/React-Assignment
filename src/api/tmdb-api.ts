@@ -54,20 +54,16 @@ export const getGenres = () => {
     });
 };
 
-export const getMovieImages = (id: string | number) => {
-  return fetch(
+export const getMovieImages = async (id: string | number) => {
+  const response = await fetch(
     `https://api.themoviedb.org/3/movie/${id}/images?api_key=${
       import.meta.env.VITE_TMDB_KEY
     }`
-  )
-    .then((response) => {
-      if (!response.ok) throw new Error("Failed to fetch images");
-      return response.json();
-    })
-    .then((json) => json.posters)
-    .catch((error) => {
-      throw error;
-    });
+  );
+  if (!response.ok) throw new Error("Failed to fetch images");
+
+  const json = await response.json();
+  return json.posters.slice(0, 1);
 };
 
 export const getMovieReviews = (id: string | number) => {
@@ -147,5 +143,14 @@ export const getSimilarMovies = async (id: string) => {
     }&language=en-US&page=1`
   );
   if (!response.ok) throw new Error(`Failed to fetch similar movies.`);
+  return response.json();
+};
+export const getSimilarTvSeries = async (id: string) => {
+  const response = await fetch(
+    `https://api.themoviedb.org/3/tv/${id}/similar?api_key=${
+      import.meta.env.VITE_TMDB_KEY
+    }&language=en-US&page=1`
+  );
+  if (!response.ok) throw new Error(`Failed to fetch similar TV series.`);
   return response.json();
 };

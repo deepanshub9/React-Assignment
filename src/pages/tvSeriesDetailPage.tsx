@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
-import { getTvSeriesDetails } from "../api/tmdb-api";
+import { getTvSeriesDetails, getSimilarTvSeries } from "../api/tmdb-api";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
 import Chip from "@mui/material/Chip";
 import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import NavigationIcon from "@mui/icons-material/Navigation";
+import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
+import CardContent from "@mui/material/CardContent";
+import Button from "@mui/material/Button";
+import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 
 const styles = {
@@ -38,20 +42,45 @@ const styles = {
   },
   chipLabel: { margin: 0.5 },
   fab: { position: "fixed", top: 50, right: 2 },
+  similarTvSection: {
+    marginTop: "40px",
+    padding: "20px",
+    backgroundColor: "#f5f5f5",
+    borderRadius: "8px",
+  },
+  card: {
+    maxWidth: 350,
+    margin: "auto",
+  },
+  media: {
+    height: 400,
+  },
+  cardContent: {
+    textAlign: "center",
+  },
+  buttonContainer: {
+    textAlign: "center",
+    marginTop: "10px",
+    marginBottom: "10px",
+  },
 };
 
 const TvSeriesDetailPage: React.FC = () => {
   const { id } = useParams();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
+  // Fetch TV series details
   const { data: tvSeries, isLoading, isError } = useQuery(["tvSeriesDetails", id], () =>
     getTvSeriesDetails(id || "")
   );
 
-  console.log("TV Series ID:", id); // Debugging log
-  console.log("TV Series Details:", tvSeries); // Debugging log
+  // Fetch similar TV series
+  const { data: similarTvSeries, isLoading: isSimilarLoading } = useQuery<{ results: { id: number; name: string; poster_path: string | null; popularity: number }[] }, Error>(
+    ["similarTvSeries", id],
+    () => getSimilarTvSeries(id || "")
+  );
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || isSimilarLoading) return <Spinner />;
   if (isError || !tvSeries) return <p>Error fetching TV series details.</p>;
 
   return (
@@ -92,6 +121,53 @@ const TvSeriesDetailPage: React.FC = () => {
           </Paper>
         </Box>
       </Box>
+
+      {/* Similar TV Series Section */}
+      <Paper sx={styles.similarTvSection}>
+        <Typography variant="h5" component="h2" gutterBottom>
+          Similar TV Series
+        </Typography>
+        {similarTvSeries?.results.length ? (
+          <Grid container spacing={3}>
+            {similarTvSeries.results.slice(0, 6).map((series) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={series.id}>
+                <Card sx={styles.card}>
+                  <CardMedia
+                    sx={styles.media}
+                    image={
+                      series.poster_path
+                        ? `https://image.tmdb.org/t/p/w500/${series.poster_path}`
+                        : "/placeholder.png"
+                    }
+                    title={series.name}
+                  />
+                  <CardContent sx={styles.cardContent}>
+                    <Typography variant="h6" component="div">
+                      {series.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Popularity: {series.popularity.toFixed(1)}
+                    </Typography>
+                  </CardContent>
+                  <Box sx={styles.buttonContainer}>
+                    <Button
+                      component={Link}
+                      to={`/tv-series/${series.id}`}
+                      variant="outlined"
+                      size="small"
+                      color="primary"
+                    >
+                      More Info
+                    </Button>
+                  </Box>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography variant="body1">No similar TV series found.</Typography>
+        )}
+      </Paper>
 
       <Fab
         color="secondary"
