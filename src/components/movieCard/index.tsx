@@ -12,7 +12,7 @@ import Avatar from "@mui/material/Avatar";
 import img from "../../images/film-poster-placeholder.png";
 import { BaseMovieProps } from "../../types/interfaces";
 import { MoviesContext } from "../../contexts/moviesContext"; 
-import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+
 
 const styles = { card: { maxWidth: 345 }, media: { height: 500 }, avatar: { backgroundColor: "rgb(255, 0, 0)" } };
 
@@ -24,9 +24,8 @@ interface MovieCardProps {
 const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => { 
   const { favourites } = useContext(MoviesContext);
   const isFavourite = favourites.includes(movie.id);
-  <MovieCard>
-  <PlaylistAddIcon color="primary" fontSize="large" /> {/* ✅ Add the icon */}
-</MovieCard>
+
+ 
 
   return (
     <Card sx={styles.card}>
@@ -51,6 +50,9 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
       </CardActions>
       
     </Card>
+    
+    
+
   );
 };
 

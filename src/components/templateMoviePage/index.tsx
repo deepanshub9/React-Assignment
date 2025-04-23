@@ -8,49 +8,39 @@ import { MovieImage, MovieDetailsProps } from "../../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from '../spinner';
 
-
 const styles = {
   gridListRoot: { display: "flex", flexWrap: "wrap", justifyContent: "space-around" },
-  gridListTile: { width: 450, height: "100vh" },
+  gridListTile: { width: 450, height: "auto" },
 };
 
 interface TemplateMoviePageProps {
   movie: MovieDetailsProps;
-  children: React.ReactElement;
+  children?: React.ReactNode;
 }
 
-const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({movie, children}) => {
+const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }) => {
   const { data, error, isLoading, isError } = useQuery<MovieImage[], Error>(
-      ["images", movie.id],
-      () => getMovieImages(movie.id)
+    ["images", movie.id],
+    () => getMovieImages(movie.id)
   );
 
-  if (isLoading) {
-      return <Spinner />;
-  }
-
-  if (isError) {
-      return <h1>{(error
-
-      ).message}</h1>;
-  }
-
-  const images = data as MovieImage[];
+  if (isLoading) return <Spinner />;
+  if (isError) return <h1>{error.message}</h1>;
 
   return (
     <>
       <MovieHeader {...movie} />
       <Grid container spacing={5} sx={{ padding: "15px" }}>
-        <Grid item xs={3}>
-          <ImageList cols={1}>
-            {images.map((image) => (
+        <Grid item xs={12} sm={4}>
+          <ImageList cols={2}> {/* ✅ Display only 2 posters */}
+            {data.map((image) => (
               <ImageListItem key={image.file_path} sx={styles.gridListTile}>
                 <img src={`https://image.tmdb.org/t/p/w500/${image.file_path}`} alt="Movie Image" />
               </ImageListItem>
             ))}
           </ImageList>
         </Grid>
-        <Grid item xs={9}>{children}</Grid>
+        <Grid item xs={12} sm={8}>{children}</Grid>
       </Grid>
     </>
   );

@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import FilterCard from "../filterMoviesCard";
 import Fab from "@mui/material/Fab";
@@ -40,3 +41,4 @@ const MovieFilterUI: React.FC<MovieFilterUIProps> = ({ onFilterValuesChange, tit
 };
 
 export default MovieFilterUI;
+
