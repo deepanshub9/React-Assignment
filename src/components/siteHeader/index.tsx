@@ -29,6 +29,8 @@ const SiteHeader: React.FC = () => {
     { label: "Popular Movies", path: "/movies/popular" },
     { label: "Popular Actors", path: "/actors" },
     { label: "Popular TV Series", path: "/tv-series" },
+    { label: "Create Fantasy Movie", path: "/fantasy/create" },
+  { label: "My Fantasy Movie", path: "/fantasy" },
   ];
 
   const handleMenuSelect = (pageURL: string) => {
@@ -44,8 +46,8 @@ const SiteHeader: React.FC = () => {
     <>
       <AppBar position="fixed" elevation={0} color="primary">
         <Toolbar>
-          <Typography variant="h4" sx={styles.title}>TMDB Client</Typography>
-          <Typography variant="h6" sx={styles.title}>All you ever wanted to know about Movies!</Typography>
+          <Typography variant="h4" sx={styles.title}>NowFlix Client</Typography>
+          <Typography variant="h6" sx={styles.title}>Brilliant simplicity meets brilliant entertainment!</Typography>
           {isMobile ? (
             <>
               <IconButton aria-label="menu" aria-controls="menu-appbar" aria-haspopup="true" onClick={handleMenu} color="inherit" size="large">
