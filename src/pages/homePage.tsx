@@ -7,12 +7,19 @@ import { DiscoverMovies, BaseMovieProps } from "../types/interfaces";
 import { useQuery } from "react-query";
 import Spinner from "../components/spinner";
 import AddToFavouritesIcon from "../components/cardIcons/addToFavourites";
+import Pagination from "@mui/material/Pagination";
 
 const titleFiltering = { name: "title", value: "", condition: titleFilter };
 const genreFiltering = { name: "genre", value: "0", condition: genreFilter };
 
 const HomePage: React.FC = () => {
-  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(["discover"], getMovies);
+  const [page, setPage] = React.useState(1);
+
+  // Pass page to query key and getMovies
+  const { data, error, isLoading, isError } = useQuery<DiscoverMovies, Error>(
+    ["discover", page],
+    () => getMovies(page)
+  );
   const { filterValues, setFilterValues, filterFunction } = useFiltering([titleFiltering, genreFiltering]);
 
   if (isLoading) return <Spinner />;
@@ -40,6 +47,12 @@ const HomePage: React.FC = () => {
         onFilterValuesChange={changeFilterValues}
         titleFilter={filterValues[0].value}
         genreFilter={filterValues[1].value}
+      />
+      <Pagination
+        count={data ? data.total_pages : 1}
+        page={page}
+        onChange={(_, value) => setPage(value)}
+        sx={{ mt: 2, display: "flex", justifyContent: "center" }}
       />
     </>
   );
