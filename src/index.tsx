@@ -17,6 +17,7 @@ import TVSeriesPage from "./pages/tvSeriesPage";
 import TvSeriesDetailPage from "./pages/tvSeriesDetailPage";
 import FantasyMoviePage from "./pages/fantasyMoviePage";
 import MyFantasyMovie from "./pages/myFantasyMovie";
+import { FavouritesProvider } from "./contexts/FavouritesContext"; // <-- Add this import
 
 
 const queryClient = new QueryClient({
@@ -34,6 +35,7 @@ const App = () => {
       <BrowserRouter>
         <SiteHeader /> {/* ✅ NEW Header Component */}
         <MoviesContextProvider>
+        <FavouritesProvider> {/* <-- Wrap your routes here */}
         <Routes>
           <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
           <Route path="/movies/:id" element={<MoviePage />} />
@@ -50,6 +52,7 @@ const App = () => {
   <Route path="/tv-series/:id" element={<TvSeriesDetailPage />} /> {/* ✅ Correct Detail page */}
   <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        </FavouritesProvider>
         </MoviesContextProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />

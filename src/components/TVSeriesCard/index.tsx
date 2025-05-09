@@ -7,6 +7,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { BaseTvSeriesProps } from "../../types/interfaces";
+import { useFavourites } from "../../contexts/FavouritesContext"; // <-- Add this import
 
 const styles = { card: { maxWidth: 345 }, media: { height: 500 } };
 
@@ -15,6 +16,10 @@ interface TVSeriesCardProps {
 }
 
 const TVSeriesCard: React.FC<TVSeriesCardProps> = ({ series }) => {
+  const { addTVSeries, tvSeries: favouriteSeries } = useFavourites(); // <-- Use context
+
+  const isFavourite = favouriteSeries.some((s) => s.id === series.id);
+
   return (
     <Card sx={styles.card}>
       <CardMedia
@@ -24,13 +29,22 @@ const TVSeriesCard: React.FC<TVSeriesCardProps> = ({ series }) => {
       />
       <CardContent>
         <Typography variant="h5" component="div">
-          {series.name} {/* ✅ Corrected title to `name` */}
+          {series.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Popularity: {series.popularity.toFixed(1)}
         </Typography>
       </CardContent>
       <CardActions>
+        <Button
+          variant={isFavourite ? "contained" : "outlined"}
+          color="primary"
+          size="small"
+          disabled={isFavourite}
+          onClick={() => addTVSeries(series)}
+        >
+          {isFavourite ? "Added to Favourites" : "Add to Favourites"}
+        </Button>
         <Button component={Link} to={`/tv-series/${series.id}`} size="small" color="primary">
           More Info
         </Button>
