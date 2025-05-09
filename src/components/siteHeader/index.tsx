@@ -25,7 +25,6 @@ const SiteHeader: React.FC = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("lg"));
 
-  // Dropdown menu handlers
   const handleDropdown = (event: MouseEvent<HTMLElement>) => setDropdown(event.currentTarget);
   const handleDropdownClose = () => setDropdown(null);
 
@@ -47,7 +46,17 @@ const SiteHeader: React.FC = () => {
     <>
       <AppBar position="fixed" elevation={0} color="primary">
         <Toolbar>
-          <img src="/now-logo1.png" alt="NowFlix Logo" style={{ height: 38, marginRight: 16, marginLeft: 18, marginTop:20, marginBottom: 20 }} />
+          <span
+            style={{ cursor: "pointer", display: "flex", alignItems: "center" }}
+            onClick={() => navigate("/")}
+            aria-label="Go to Home"
+          >
+            <img
+              src="/now-logo1.png"
+              alt="NowFlix Logo"
+              style={{ height: 38, marginRight: 16, marginLeft: 18, marginTop: 20, marginBottom: 20 }}
+            />
+          </span>
           <Typography variant="h6" sx={styles.title}>
             Brilliant simplicity meets brilliant entertainment!
           </Typography>
@@ -75,6 +84,7 @@ const SiteHeader: React.FC = () => {
                 <MenuItem onClick={() => handleMenuSelect("/tv-series")}>Popular TV Series</MenuItem>
                 <MenuItem onClick={() => handleMenuSelect("/fantasy/create")}>Create Fantasy Movie</MenuItem>
                 <MenuItem onClick={() => handleMenuSelect("/fantasy")}>My Fantasy Movie</MenuItem>
+                <MenuItem onClick={() => handleMenuSelect("/playlists")}>Playlists</MenuItem>
               </Menu>
             </>
           ) : (
@@ -113,9 +123,9 @@ const SiteHeader: React.FC = () => {
                 <MenuItem onClick={() => handleMenuSelect("/actors/favourites")}>Actors</MenuItem>
                 <MenuItem onClick={() => handleMenuSelect("/tv-series/favourites")}>TV Series</MenuItem>
               </Menu>
-              
               <Button color="inherit" onClick={() => handleMenuSelect("/fantasy/create")}>Create Fantasy Movie</Button>
               <Button color="inherit" onClick={() => handleMenuSelect("/fantasy")}>My Fantasy Movie</Button>
+              <Button color="inherit" onClick={() => handleMenuSelect("/playlists")}>Playlists</Button>
             </Box>
           )}
         </Toolbar>
