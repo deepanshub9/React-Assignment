@@ -1,10 +1,10 @@
 import { BaseMovieProps } from "../types/interfaces"; // ✅ Ensure correct import
 
-export const getMovies = () => {
+export const getMovies = (page = 1) => {
   return fetch(
     `https://api.themoviedb.org/3/discover/movie?api_key=${
       import.meta.env.VITE_TMDB_KEY
-    }&language=en-US&include_adult=false&include_video=false&page=1`
+    }&language=en-US&include_adult=false&include_video=false&page=${page}`
   )
     .then((response) => {
       if (!response.ok)
@@ -100,20 +100,20 @@ export const getPopularMovies = async () => {
   if (!response.ok) throw new Error(`Failed to fetch popular movies.`);
   return response.json();
 };
-export const getPopularActors = async () => {
+export const getPopularActors = async (page = 1) => {
   const response = await fetch(
     `https://api.themoviedb.org/3/person/popular?api_key=${
       import.meta.env.VITE_TMDB_KEY
-    }`
+    }&page=${page}`
   );
   if (!response.ok) throw new Error(`Failed to fetch popular actors.`);
   return response.json();
 };
-export const getPopularTVSeries = async () => {
+export const getPopularTVSeries = async (page = 1) => {
   const response = await fetch(
     `https://api.themoviedb.org/3/tv/popular?api_key=${
       import.meta.env.VITE_TMDB_KEY
-    }`
+    }&page=${page}`
   );
   if (!response.ok) throw new Error(`Failed to fetch popular TV series.`);
   return response.json();

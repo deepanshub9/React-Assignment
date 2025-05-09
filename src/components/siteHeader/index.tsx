@@ -46,7 +46,7 @@ const SiteHeader: React.FC = () => {
     <>
       <AppBar position="fixed" elevation={0} color="primary">
         <Toolbar>
-          <Typography variant="h4" sx={styles.title}>NowFlix Client</Typography>
+        <img src="/now-logo1.png" alt="NowFlix Logo" style={{ height: 38, marginRight: 16, marginLeft: 18, marginTop:20, marginBottom: 20 }} />
           <Typography variant="h6" sx={styles.title}>Brilliant simplicity meets brilliant entertainment!</Typography>
           {isMobile ? (
             <>

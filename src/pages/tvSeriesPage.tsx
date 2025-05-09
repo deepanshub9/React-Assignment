@@ -5,9 +5,16 @@ import { useQuery } from "react-query";
 import { getPopularTVSeries } from "../api/tmdb-api";
 import { BaseTvSeriesProps } from "../types/interfaces";
 import MovieFilterUI from "../components/movieFilterUI";
+import Pagination from "@mui/material/Pagination";
 
 const TVSeriesPage: React.FC = () => {
-  const { data: tvSeries, isLoading, isError } = useQuery(["popularTVSeries"], getPopularTVSeries);
+  const [page, setPage] = useState(1);
+
+  // Add type for react-query if possible, e.g. useQuery<{ results: BaseTvSeriesProps[], total_pages: number }, Error>
+  const { data: tvSeries, isLoading, isError } = useQuery(
+    ["popularTVSeries", page],
+    () => getPopularTVSeries(page)
+  );
 
   const [filterValues, setFilterValues] = useState({
     title: "",
@@ -19,16 +26,19 @@ const TVSeriesPage: React.FC = () => {
     setFilterValues((prev) => ({ ...prev, [filterType]: value }));
   };
 
-  const filteredSeries = tvSeries?.results
-    .filter((series: BaseTvSeriesProps) =>
-      filterValues.genre ? series.genre_ids.includes(Number(filterValues.genre)) : true
-    )
-    .filter((series: BaseTvSeriesProps) =>
-      filterValues.title ? series.name.toLowerCase().includes(filterValues.title.toLowerCase()) : true
-    )
-    .sort((a, b) =>
-      filterValues.sortOrder === "asc" ? a.popularity - b.popularity : b.popularity - a.popularity
-    );
+  let filteredSeries = tvSeries?.results || [];
+  if (filteredSeries.length > 0) {
+    filteredSeries = filteredSeries
+      .filter((series: BaseTvSeriesProps) =>
+        filterValues.genre ? series.genre_ids.includes(Number(filterValues.genre)) : true
+      )
+      .filter((series: BaseTvSeriesProps) =>
+        filterValues.title ? series.name.toLowerCase().includes(filterValues.title.toLowerCase()) : true
+      )
+      .sort((a, b) =>
+        filterValues.sortOrder === "asc" ? a.popularity - b.popularity : b.popularity - a.popularity
+      );
+  }
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error fetching TV series.</p>;
@@ -36,7 +46,7 @@ const TVSeriesPage: React.FC = () => {
   return (
     <>
       <TemplateTvSeriesListPage
-        seriesList={filteredSeries || []}
+        seriesList={filteredSeries}
         action={(series) => <TVSeriesCard series={series} />}
       />
       <MovieFilterUI
@@ -44,7 +54,13 @@ const TVSeriesPage: React.FC = () => {
         titleFilter={filterValues.title}
         genreFilter={filterValues.genre}
         sortOrder={filterValues.sortOrder}
-        filterType="tvSeries" // Pass filterType as "tvSeries"
+        filterType="tvSeries"
+      />
+      <Pagination
+        count={tvSeries ? tvSeries.total_pages : 1}
+        page={page}
+        onChange={(_, value) => setPage(value)}
+        sx={{ mt: 2, display: "flex", justifyContent: "center" }}
       />
     </>
   );

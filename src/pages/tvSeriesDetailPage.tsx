@@ -41,7 +41,7 @@ const styles = {
     margin: 0,
   },
   chipLabel: { margin: 0.5 },
-  fab: { position: "fixed", top: 50, right: 2 },
+  fab: { position: "fixed", top: 90, right: 2 },
   similarTvSection: {
     marginTop: "40px",
     padding: "20px",

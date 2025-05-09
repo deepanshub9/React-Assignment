@@ -11,10 +11,11 @@ import Fab from "@mui/material/Fab";
 import Drawer from "@mui/material/Drawer";
 import MovieReviews from '../movieReviews'
 
+
 const styles = {
     chipSet: {
         display: "flex",
-        justifyContent: "center",
+        justifyContent: "left",
         alignItems: "center",
         flexWrap: "wrap",
         listStyle: "none",
@@ -26,8 +27,9 @@ const styles = {
     },
     fab: {
         position: "fixed",
-        top: 50,
+        top: 90,
         right: 2,
+    
     },
 };
 

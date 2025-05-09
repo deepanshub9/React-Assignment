@@ -13,6 +13,7 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
 import { MovieDetailsProps, BaseMovieProps } from "../types/interfaces";
+import MovieDetails from "../components/movieDetails";
 
 const styles = {
   container: {
@@ -93,7 +94,7 @@ const MovieDetailsPage: React.FC = () => {
 
         {/* Details on the right */}
         <Box sx={styles.details}>
-          <Typography variant="h4" component="h1" gutterBottom>
+          {/* <Typography variant="h4" component="h1" gutterBottom>
             {movie.title}
           </Typography>
 
@@ -110,7 +111,12 @@ const MovieDetailsPage: React.FC = () => {
                 <Chip label={g.name} />
               </li>
             ))}
-          </Paper>
+
+
+          </Paper> */}
+          <br/> 
+          <br/> 
+          <MovieDetails {...movie}  />
 
           <Paper component="ul" sx={styles.chipSet}>
             <Chip label={`Release Date: ${movie.release_date}`} />
