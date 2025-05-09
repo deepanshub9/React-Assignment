@@ -1,20 +1,23 @@
 import React, { createContext, useContext, useState } from "react";
+import { BaseActorProps, BaseTvSeriesProps } from "../types/interfaces";
 
 export type FavouritesType = {
-  actors: any[];
-  tvSeries: any[];
-  addActor: (actor: any) => void;
-  addTVSeries: (series: any) => void;
+  actors: BaseActorProps[];
+  tvSeries: BaseTvSeriesProps[];
+  addActor: (actor: BaseActorProps) => void;
+  addTVSeries: (series: BaseTvSeriesProps) => void;
 };
 
 const FavouritesContext = createContext<FavouritesType | undefined>(undefined);
 
 export const FavouritesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [actors, setActors] = useState<any[]>([]);
-  const [tvSeries, setTVSeries] = useState<any[]>([]);
+  const [actors, setActors] = useState<BaseActorProps[]>([]);
+  const [tvSeries, setTVSeries] = useState<BaseTvSeriesProps[]>([]);
 
-  const addActor = (actor: any) => setActors((prev) => [...prev, actor]);
-  const addTVSeries = (series: any) => setTVSeries((prev) => [...prev, series]);
+  const addActor = (actor: BaseActorProps) =>
+    setActors((prev) => (prev.some((a) => a.id === actor.id) ? prev : [...prev, actor]));
+  const addTVSeries = (series: BaseTvSeriesProps) =>
+    setTVSeries((prev) => (prev.some((s) => s.id === series.id) ? prev : [...prev, series]));
 
   return (
     <FavouritesContext.Provider value={{ actors, tvSeries, addActor, addTVSeries }}>
