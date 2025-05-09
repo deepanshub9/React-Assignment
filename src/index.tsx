@@ -18,6 +18,8 @@ import TvSeriesDetailPage from "./pages/tvSeriesDetailPage";
 import FantasyMoviePage from "./pages/fantasyMoviePage";
 import MyFantasyMovie from "./pages/myFantasyMovie";
 import { FavouritesProvider } from "./contexts/FavouritesContext"; // <-- Add this import
+import FavouriteTVSeriesPage from "./pages/FavouriteTVseries";
+import FavouriteActorsPage from "./pages/favouriteActorsPage";
 
 
 const queryClient = new QueryClient({
@@ -48,7 +50,9 @@ const App = () => {
           <Route path="/fantasy/create" element={<FantasyMoviePage />} />
 <Route path="/fantasy" element={<MyFantasyMovie />} />
           <Route path="/actors" element={<ActorsPage />} />
+          <Route path="/actors/favourites" element={<FavouriteActorsPage />} /> {/* <-- Add this line */}
           <Route path="/tv-series" element={<TVSeriesPage />} /> {/* ✅ List page */}
+          <Route path="/tv-series/favourites" element={<FavouriteTVSeriesPage />} /> {/* <-- Add this line */}
   <Route path="/tv-series/:id" element={<TvSeriesDetailPage />} /> {/* ✅ Correct Detail page */}
   <Route path="*" element={<Navigate to="/" />} />
         </Routes>
