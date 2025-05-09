@@ -20,6 +20,9 @@ import MyFantasyMovie from "./pages/myFantasyMovie";
 import { FavouritesProvider } from "./contexts/FavouritesContext"; // <-- Add this import
 import FavouriteTVSeriesPage from "./pages/FavouriteTVseries";
 import FavouriteActorsPage from "./pages/favouriteActorsPage";
+import { PlaylistsProvider } from "./contexts/playlistsContext";
+import PlaylistsPage from "./pages/playlistsPage";
+import PlaylistDetailPage from "./pages/playlistDetailPage";
 
 
 const queryClient = new QueryClient({
@@ -38,12 +41,14 @@ const App = () => {
         <SiteHeader /> {/* ✅ NEW Header Component */}
         <MoviesContextProvider>
         <FavouritesProvider> {/* <-- Wrap your routes here */}
+         <PlaylistsProvider> {/* <-- Add this line */}
         <Routes>
           <Route path="/movies/favourites" element={<FavouriteMoviesPage />} />
           <Route path="/movies/:id" element={<MoviePage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="*" element={<Navigate to="/" />} />
           <Route path="/reviews/:id" element={<MovieReviewPage />} />
+          <Route path="/playlists/:id" element={<PlaylistDetailPage />} />
           <Route path="/reviews/form" element={<AddMovieReviewPage/>} />
           <Route path="/movies/upcoming" element={<UpcomingMoviesPage />} />
           <Route path="/movies/popular" element={<PopularMoviesPage />} />
@@ -52,10 +57,12 @@ const App = () => {
           <Route path="/actors" element={<ActorsPage />} />
           <Route path="/actors/favourites" element={<FavouriteActorsPage />} /> {/* <-- Add this line */}
           <Route path="/tv-series" element={<TVSeriesPage />} /> {/* ✅ List page */}
+          <Route path="/playlists" element={<PlaylistsPage />} />
           <Route path="/tv-series/favourites" element={<FavouriteTVSeriesPage />} /> {/* <-- Add this line */}
   <Route path="/tv-series/:id" element={<TvSeriesDetailPage />} /> {/* ✅ Correct Detail page */}
   <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+         </PlaylistsProvider> {/* <-- And this line */}
         </FavouritesProvider>
         </MoviesContextProvider>
       </BrowserRouter>

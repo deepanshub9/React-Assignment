@@ -3,6 +3,7 @@ import { BaseMovieProps, Review } from "../types/interfaces";
 
 interface MovieContextInterface {
   favourites: number[];
+  setFavourites: React.Dispatch<React.SetStateAction<number[]>>; // <-- Add this line
   addToFavourites: (movie: BaseMovieProps) => void;
   removeFromFavourites: (movie: BaseMovieProps) => void;
   addReview: (movie: BaseMovieProps, review: Review) => void;
@@ -11,6 +12,7 @@ interface MovieContextInterface {
 
 const initialContextState: MovieContextInterface = {
   favourites: [],
+  setFavourites: () => {}, // <-- Add this line
   addToFavourites: () => {},
   removeFromFavourites: () => {},
   addReview: () => {},
@@ -19,13 +21,10 @@ const initialContextState: MovieContextInterface = {
 
 export const MoviesContext = React.createContext<MovieContextInterface>(initialContextState);
 
-
 const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [favourites, setFavourites] = useState<number[]>([]);
   const [reviews, setReviews] = useState<Record<number, Review>>({}); 
 
-
-  
   const addToFavourites = (movie: BaseMovieProps) => {
     setFavourites((prevFavourites) => {
       if (!prevFavourites.includes(movie.id)) {
@@ -48,7 +47,7 @@ const MoviesContextProvider: React.FC<React.PropsWithChildren> = ({ children }) 
   };
 
   return (
-    <MoviesContext.Provider value={{ favourites, addToFavourites, removeFromFavourites, addReview, getReview }}>
+    <MoviesContext.Provider value={{ favourites, setFavourites, addToFavourites, removeFromFavourites, addReview, getReview }}>
       {children}
     </MoviesContext.Provider>
   );
