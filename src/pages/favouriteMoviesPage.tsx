@@ -4,13 +4,12 @@ import { useQueries } from "react-query";
 import { getMovie } from "../api/tmdb-api";
 import Spinner from "../components/spinner";
 import { BaseMovieProps } from "../types/interfaces";
+import Typography from "@mui/material/Typography";
+import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+import type { DroppableProvided, DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
+import MovieCard from "../components/movieCard";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
-import MovieCard from "../components/movieCard";
-
-import Typography from "@mui/material/Typography";
-import { DragDropContext, Droppable, Draggable, DropResult } from "react-beautiful-dnd";
-
 
 
 const FavouriteMoviesPage: React.FC = () => {
@@ -36,7 +35,8 @@ const FavouriteMoviesPage: React.FC = () => {
     .map((q) => q.data)
     .filter((m): m is BaseMovieProps => !!m);
 
-  const onDragEnd = (result: DropResult) => {
+  // If using DropResult type, use: (result: DropResult)
+  const onDragEnd = (result: import("react-beautiful-dnd").DropResult) => {
     if (!result.destination) return;
     const reordered = Array.from(movieIds);
     const [removed] = reordered.splice(result.source.index, 1);
@@ -51,38 +51,42 @@ const FavouriteMoviesPage: React.FC = () => {
       </Typography>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="favourites-droppable" direction="horizontal">
-          {(provided) => (
+          {(provided: DroppableProvided) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
               style={{ display: "flex", flexWrap: "wrap", gap: 24, padding: 24 }}
             >
-              {allFavourites.map((movie, index) => (
-                <Draggable key={movie.id} draggableId={movie.id.toString()} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={{
-                        ...provided.draggableProps.style,
-                        opacity: snapshot.isDragging ? 0.7 : 1,
-                        margin: "0 12px 24px 0",
-                      }}
-                    >
-                      <MovieCard
-                        movie={movie}
-                        action={(m) => (
-                          <>
-                            <RemoveFromFavourites {...m} />
-                            <WriteReview {...m} />
-                          </>
-                        )}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+              {movieIds.map((id, index) => {
+                const movie = allFavourites.find((m) => m.id === id);
+                if (!movie) return null;
+                return (
+                  <Draggable key={movie.id} draggableId={movie.id.toString()} index={index}>
+                    {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={{
+                          ...provided.draggableProps.style,
+                          opacity: snapshot.isDragging ? 0.7 : 1,
+                          margin: "0 12px 24px 0",
+                        }}
+                      >
+                        <MovieCard
+                          movie={movie}
+                          action={(m) => (
+                            <>
+                              <RemoveFromFavourites {...m} />
+                              <WriteReview {...m} />
+                            </>
+                          )}
+                        />
+                      </div>
+                    )}
+                  </Draggable>
+                );
+              })}
               {provided.placeholder}
             </div>
           )}
@@ -93,4 +97,3 @@ const FavouriteMoviesPage: React.FC = () => {
 };
 
 export default FavouriteMoviesPage;
-

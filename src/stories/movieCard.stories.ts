@@ -7,9 +7,19 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const Basic: Story = { args: SampleMovie };
+export const Basic: Story = {
+  args: {
+    movie: SampleMovie,
+    action: () => null,
+  }
+};
 Basic.storyName = "Default";
 
 const sampleNoPoster = { ...SampleMovie, poster_path: undefined };
-export const Exceptional: Story = { args: sampleNoPoster };
+export const Exceptional: Story = {
+  args: {
+    movie: sampleNoPoster,
+    action: () => null,
+  }
+};
 Exceptional.storyName = "Exception";

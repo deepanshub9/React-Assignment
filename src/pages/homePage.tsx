@@ -43,11 +43,13 @@ const HomePage: React.FC = () => {
           return <AddToFavouritesIcon {...movie} />;
         }}
       />
-      <MovieFilterUI
-        onFilterValuesChange={changeFilterValues}
-        titleFilter={filterValues[0].value}
-        genreFilter={filterValues[1].value}
-      />
+     <MovieFilterUI
+  onFilterValuesChange={changeFilterValues}
+  titleFilter={filterValues[0].value}
+  genreFilter={filterValues[1].value}
+  sortOrder="desc"
+  filterType="movies"
+/>
       <Pagination
         count={data ? data.total_pages : 1}
         page={page}

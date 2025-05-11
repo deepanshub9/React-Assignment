@@ -35,9 +35,11 @@ const TVSeriesPage: React.FC = () => {
       .filter((series: BaseTvSeriesProps) =>
         filterValues.title ? series.name.toLowerCase().includes(filterValues.title.toLowerCase()) : true
       )
-      .sort((a, b) =>
-        filterValues.sortOrder === "asc" ? a.popularity - b.popularity : b.popularity - a.popularity
-      );
+     .sort((a: BaseTvSeriesProps, b: BaseTvSeriesProps) =>
+  filterValues.sortOrder === "asc"
+    ? a.popularity - b.popularity
+    : b.popularity - a.popularity
+)
   }
 
   if (isLoading) return <p>Loading...</p>;
@@ -49,13 +51,13 @@ const TVSeriesPage: React.FC = () => {
         seriesList={filteredSeries}
         action={(series) => <TVSeriesCard series={series} />}
       />
-      <MovieFilterUI
-        onFilterValuesChange={handleFilterChange}
-        titleFilter={filterValues.title}
-        genreFilter={filterValues.genre}
-        sortOrder={filterValues.sortOrder}
-        filterType="tvSeries"
-      />
+     <MovieFilterUI
+  onFilterValuesChange={handleFilterChange}
+  titleFilter={filterValues.title}
+  genreFilter={filterValues.genre}
+  sortOrder={filterValues.sortOrder}
+  filterType="tvSeries"
+/>
       <Pagination
         count={tvSeries ? tvSeries.total_pages : 1}
         page={page}

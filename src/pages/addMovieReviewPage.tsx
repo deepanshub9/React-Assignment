@@ -11,6 +11,10 @@ const WriteReviewPage: React.FC = () => {
     const location = useLocation();
     const { movieId } = location.state || {};
 
+    if (!movieId) {
+        return <h2>No movie selected for review. Please use the "Write Review" button on a movie.</h2>;
+    }
+
     const { data: movie, error, isLoading, isError } = useQuery<MovieDetailsProps, Error>(
         ["movie", movieId],
         () => getMovie(movieId)

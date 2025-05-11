@@ -11,6 +11,13 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Basic: Story = {
+  args: {
+    onUserInput: () => {},
+    titleFilter: "",
+    genreFilter: "",
+    sortOrder: "",
+    filterType: "movies",
+  }
 };
 Basic.storyName = "Default";
 

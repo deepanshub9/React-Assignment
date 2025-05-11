@@ -1,17 +1,14 @@
-import React, { useContext, useState, ChangeEvent } from "react";
+import React, { useContext, useState } from "react";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { MoviesContext } from "../../contexts/moviesContext";
-import { useNavigate } from "react-router-dom";
 import { BaseMovieProps, Review } from "../../types/interfaces";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import styles from "./styles";
-import ratings from "./ratingCategories";
 
 const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
   const defaultValues = {
@@ -24,25 +21,27 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
 
   const { control, formState: { errors }, handleSubmit, reset } = useForm<Review>({ defaultValues });
 
-  const navigate = useNavigate();
   const context = useContext(MoviesContext);
   const [rating, setRating] = useState(3);
   const [open, setOpen] = useState(false);
 
-  const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setRating(Number(event.target.value));
+
+  const handleSnackClose = () => {
+    setOpen(false);
+    reset({ author: "", content: "" });
   };
 
   const onSubmit: SubmitHandler<Review> = (review) => {
     review.movieId = movie.id;
     review.rating = rating;
     context.addReview(movie, review);
-    setOpen(true);
-  };
 
-  const handleSnackClose = () => {
-    setOpen(false);
-    navigate("/movies/favourites");
+    // --- Save to localStorage ---
+    const reviews = JSON.parse(localStorage.getItem("reviews") || "[]");
+    localStorage.setItem("reviews", JSON.stringify([...reviews, review]));
+    // ----------------------------
+
+    setOpen(true);
   };
 
   return (
@@ -111,29 +110,39 @@ const ReviewForm: React.FC<BaseMovieProps> = (movie) => {
           )}
         </Box>
 
-        <Box sx={{ marginBottom: 3 }}>
-          <Controller
-            name="rating"
-            control={control}
-            render={({ field }) => (
-              <TextField
-                {...field}
-                fullWidth
-                select
-                variant="outlined"
-                label="Rating"
-                value={rating}
-                onChange={handleRatingChange}
-              >
-                {ratings.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </TextField>
-            )}
-          />
-        </Box>
+      <Box sx={{ marginBottom: 3 }}>
+  <Controller
+    name="rating"
+    control={control}
+    rules={{
+      required: "Rating is required",
+      min: { value: 1, message: "Minimum rating is 1" },
+      max: { value: 5, message: "Maximum rating is 5" },
+    }}
+    render={({ field }) => (
+      <TextField
+        {...field}
+        type="number"
+        fullWidth
+        variant="outlined"
+        label="Rating (1-5)"
+        inputProps={{ min: 1, max: 5 }}
+        value={rating}
+        onChange={(e) => {
+          const value = Number(e.target.value);
+          setRating(value);
+          field.onChange(value);
+        }}
+        required
+      />
+    )}
+  />
+  {errors.rating && (
+    <Typography color="error" variant="body2" sx={{ marginTop: 1 }}>
+      {errors.rating.message}
+    </Typography>
+  )}
+</Box>
 
         <Box sx={{ display: "flex", justifyContent: "space-between", gap: 2 }}>
           <Button type="submit" variant="contained" color="primary" fullWidth>
