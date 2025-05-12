@@ -2,6 +2,8 @@
 
 NowFlix is a feature-rich React + TypeScript + Vite application for discovering movies, TV series, and actors using the TMDB API. It supports advanced filtering, favourites, themed playlists, fantasy movie creation, reviews, Storybook, and AWS deployment.
 
+Application URL: https://dze2090e9c7gs.cloudfront.net/
+
 ---
 
 ## Table of Contents
@@ -32,17 +34,18 @@ NowFlix is a feature-rich React + TypeScript + Vite application for discovering 
 
 ## Features
 
-- 🔍 **Browse**: Discover movies, TV series, and actors from TMDB.
-- 🎬 **Movie/TV/Actor Details**: View detailed info, similar items, and images.
-- 🧑‍🤝‍🧑 **Favourites**: Add/remove favourite movies, TV series, and actors.
-- 📝 **Reviews**: Write and view reviews for movies.
-- 🎭 **Fantasy Movie**: Create your own movie with cast, poster, and rich description.
-- 🎵 **Playlists**: Create themed playlists of movies.
-- 🔗 **Extensive Data Hyperlinking**: Navigate between related data.
-- 🔄 **Pagination**: Paginated lists for movies, TV series, and actors.
-- 🔒 **Routing**: Public and private routes.
-- 🧪 **Storybook**: Visual test and develop UI components in isolation.
-- ☁️ **AWS Deployment**: Deploy to S3 + CloudFront for global static hosting.
+- **Browse**: Discover movies, TV series, and actors from TMDB.
+- **Movie/TV/Actor Details**: View detailed info, similar items, and images.
+- **Favourites**: Add/remove favourite movies, TV series, and actors.
+- **Reviews**: Write and view reviews for movies and persist in DynamoDB.
+- **Fantasy Movie**: Create your own movie with cast, poster, and rich description.
+- **Playlists**: Create themed playlists of movies.
+- **Extensive Data Hyperlinking**: Navigate between related data.
+- **Pagination**: Paginated lists for movies, TV series, and actors.
+- **Filter & Sorting, Multi-Criteria Search , Fantasy Movie**
+- **Routing**: Public and private routes.
+- **Storybook**: Visual test and develop UI components in isolation.
+- **AWS Deployment**: Deploy to S3 + CloudFront for global static hosting.
 
 ---
 
@@ -128,6 +131,26 @@ npm run preview
 
 ---
 
+![Image](https://github.com/user-attachments/assets/04803ef2-0ab2-4d3e-abc4-c52cf0e4a4ca)
+
+![Image](https://github.com/user-attachments/assets/f617eb77-7312-4ecd-b3cb-61187a31e28f)
+
+![Image](https://github.com/user-attachments/assets/8c6e00f7-6ee4-4c8e-b864-2ca1c818650d)
+
+![Image](https://github.com/user-attachments/assets/a044335a-9e58-4615-96b3-3270dfc5fcd8)
+
+![Image](https://github.com/user-attachments/assets/a4b765d5-f3a9-4aef-acb2-09d191f44b8b)
+
+![Image](https://github.com/user-attachments/assets/8fc95e87-1c42-43c4-87c4-4c13cc1d35d5)
+
+![Image](https://github.com/user-attachments/assets/e428fb77-37b4-4ee9-a603-ea85933b2eb7)
+
+![Image](https://github.com/user-attachments/assets/22f51245-2c31-42e0-adbb-4a2f142acda6)
+
+![Image](https://github.com/user-attachments/assets/56839945-b879-46b0-81dd-22f9d81a77b9)
+
+![Image](https://github.com/user-attachments/assets/ef500d50-c169-4d1a-8a5d-73cf651a5dea)
+
 ## Core Functionality
 
 ### Movies, TV Series, and Actors
@@ -162,7 +185,11 @@ npm run preview
 - Example:
   ```tsx
   const { playlists, addPlaylist, removePlaylist } = usePlaylists();
-  addPlaylist({ title: "My Sci-Fi", theme: "Sci-Fi", movies: [movie1, movie2] });
+  addPlaylist({
+    title: "My Sci-Fi",
+    theme: "Sci-Fi",
+    movies: [movie1, movie2],
+  });
   ```
 
 ### Fantasy Movie
@@ -203,7 +230,6 @@ npm run preview
 3. **Set up CloudFront:**
    - Create a CloudFront distribution with your S3 bucket as the origin.
    - Set default root object to `index.html`.
-   - (Optional) Set up a custom domain and SSL.
 
 ---
 
@@ -225,22 +251,28 @@ addToFavourites(movie);
 import { usePlaylists } from "../contexts/playlistsContext";
 
 const { addPlaylist } = usePlaylists();
-addPlaylist({ title: "Oscar Winners", theme: "Drama", movies: [movie1, movie2] });
+addPlaylist({
+  title: "Oscar Winners",
+  theme: "Drama",
+  movies: [movie1, movie2],
+});
 ```
 
 ### Fantasy Movie Cast Section
 
 ```tsx
-{fantasyMovie.cast.map((member, idx) => (
-  <Box key={idx}>
-    <TextField
-      label="Name"
-      value={member.name}
-      onChange={(e) => handleCastChange(idx, "name", e.target.value)}
-    />
-    {/* ... */}
-  </Box>
-))}
+{
+  fantasyMovie.cast.map((member, idx) => (
+    <Box key={idx}>
+      <TextField
+        label="Name"
+        value={member.name}
+        onChange={(e) => handleCastChange(idx, "name", e.target.value)}
+      />
+      {/* ... */}
+    </Box>
+  ));
+}
 ```
 
 ---
@@ -249,7 +281,7 @@ addPlaylist({ title: "Oscar Winners", theme: "Drama", movies: [movie1, movie2] }
 
 1. Fork the repo
 2. Create your feature branch (`git checkout -b feature/YourFeature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
 4. Push to the branch (`git push origin feature/YourFeature`)
 5. Create a new Pull Request
 
@@ -273,4 +305,4 @@ MIT
 
 ## Contact
 
-For questions, open an issue or contact [yourname@domain.com](mailto:yourname@domain.com).
+For questions, open an issue or contact [yourname@domain.com](mailto:deepanshub096@gmail.com).
