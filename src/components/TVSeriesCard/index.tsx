@@ -7,16 +7,20 @@ import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { BaseTvSeriesProps } from "../../types/interfaces";
-import { useFavourites } from "../../contexts/FavouritesContext"; // <-- Add this import
+import { useFavourites } from "../../contexts/FavouritesContext";
 
-const styles = { card: { maxWidth: 345 }, media: { height: 500 } };
+// Responsive styles: let card fill grid column, use aspect ratio for image
+const styles = {
+  card: { width: "100%", maxWidth: 345, minWidth: 0, margin: "auto" },
+  media: { width: "100%", height: 0, paddingTop: "150%" }, // 2:3 aspect ratio
+};
 
 interface TVSeriesCardProps {
   series: BaseTvSeriesProps;
 }
 
 const TVSeriesCard: React.FC<TVSeriesCardProps> = ({ series }) => {
-  const { addTVSeries, tvSeries: favouriteSeries } = useFavourites(); // <-- Use context
+  const { addTVSeries, tvSeries: favouriteSeries } = useFavourites();
 
   const isFavourite = favouriteSeries.some((s) => s.id === series.id);
 
@@ -28,7 +32,7 @@ const TVSeriesCard: React.FC<TVSeriesCardProps> = ({ series }) => {
         title={series.name}
       />
       <CardContent>
-        <Typography variant="h5" component="div">
+        <Typography variant="h6" component="div" noWrap>
           {series.name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
