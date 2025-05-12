@@ -6,7 +6,6 @@ import Spinner from "../components/spinner";
 import { BaseMovieProps } from "../types/interfaces";
 import Typography from "@mui/material/Typography";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-import type { DroppableProvided, DraggableProvided, DraggableStateSnapshot } from "react-beautiful-dnd";
 import MovieCard from "../components/movieCard";
 import RemoveFromFavourites from "../components/cardIcons/removeFromFavourites";
 import WriteReview from "../components/cardIcons/writeReview";
@@ -35,8 +34,8 @@ const FavouriteMoviesPage: React.FC = () => {
     .map((q) => q.data)
     .filter((m): m is BaseMovieProps => !!m);
 
-  // If using DropResult type, use: (result: DropResult)
-  const onDragEnd = (result: import("react-beautiful-dnd").DropResult) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onDragEnd = (result: any) => {
     if (!result.destination) return;
     const reordered = Array.from(movieIds);
     const [removed] = reordered.splice(result.source.index, 1);
@@ -51,7 +50,8 @@ const FavouriteMoviesPage: React.FC = () => {
       </Typography>
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="favourites-droppable" direction="horizontal">
-          {(provided: DroppableProvided) => (
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+          {(provided: any) => (
             <div
               ref={provided.innerRef}
               {...provided.droppableProps}
@@ -62,7 +62,8 @@ const FavouriteMoviesPage: React.FC = () => {
                 if (!movie) return null;
                 return (
                   <Draggable key={movie.id} draggableId={movie.id.toString()} index={index}>
-                    {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => (
+                    {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
+                    {(provided: any, snapshot: any) => (
                       <div
                         ref={provided.innerRef}
                         {...provided.draggableProps}
