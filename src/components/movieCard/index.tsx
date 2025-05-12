@@ -14,7 +14,11 @@ import { BaseMovieProps } from "../../types/interfaces";
 import { MoviesContext } from "../../contexts/moviesContext"; 
 
 
-const styles = { card: { maxWidth: 345 }, media: { height: 500 }, avatar: { backgroundColor: "rgb(255, 0, 0)" } };
+const styles = {
+  card: { width: "100%", maxWidth: 345, minWidth: 0, margin: "auto" },
+  media: { width: "100%", height: 0, paddingTop: "150%" }, // 2:3 aspect ratio
+  avatar: { backgroundColor: "rgb(255, 0, 0)" }
+};
 
 interface MovieCardProps {
   movie: BaseMovieProps;
@@ -29,11 +33,14 @@ const MovieCard: React.FC<MovieCardProps> = ({ movie, action }) => {
 
   return (
     <Card sx={styles.card}>
-      <CardHeader
-        avatar={isFavourite ? <Avatar sx={styles.avatar}><FavoriteIcon /></Avatar> : null}
-        title={<Typography variant="h5" component="p">{movie.title}</Typography>}
-      />
-      <CardMedia sx={styles.media} image={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : img} />
+       <CardHeader
+    avatar={isFavourite ? <Avatar sx={styles.avatar}><FavoriteIcon /></Avatar> : null}
+    title={<Typography variant="h5" component="p">{movie.title}</Typography>}
+  />
+    <CardMedia
+    sx={styles.media}
+    image={movie.poster_path ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}` : img}
+  />
       <CardContent>
         <Typography variant="subtitle1">
           <strong>Release Date:</strong> {movie.release_date ?? "Not Available"}
