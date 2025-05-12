@@ -33,7 +33,7 @@ const TemplateMoviePage: React.FC<TemplateMoviePageProps> = ({ movie, children }
       <Grid container spacing={5} sx={{ padding: "15px" }}>
         <Grid item xs={12} sm={4}>
           <ImageList cols={2}> {/* ✅ Display only 2 posters */}
-            {data.map((image) => (
+            {data && data.map((image) => (
               <ImageListItem key={image.file_path} sx={styles.gridListTile}>
                 <img src={`https://image.tmdb.org/t/p/w500/${image.file_path}`} alt="Movie Image" />
               </ImageListItem>
